@@ -28,7 +28,7 @@
    Нажимает «Рассчитать», сервер выполняет расчеты.
    Получает результаты в виде таблицы.
 
-   ###API-эндпоинты (RESTful)
+   ### API-эндпоинты (RESTful)
 
    Метод Эндпоинт Описание
    POST /projects Создание проекта
@@ -36,3 +36,20 @@
    POST /cashflows Добавление данных (OPEX, CAPEX, выручка)
    POST /calculate Запуск расчета (NPV, IRR, PP, DPP)
    GET /results/:project_id Получение результатов расчета
+
+   ### Структура Проекта
+
+   investmentCalculationProject/
+   │── server/ # Backend-папка
+   │ │── node_modules/ # Установленные пакеты (не коммитим)
+   │ │── routes/ # Папка с маршрутами
+   │ │ │── projectsRoutes.js # Маршруты для проектов
+   │ │ │── calculateRoutes.js # Маршруты для расчетов
+   │ │ │── userRoutes.js # Маршруты для пользователей
+   │ │── .env # Конфигурация окружения (порт, ключи и т.д.)
+   │ │── .gitignore # Игнорируемые файлы (например, `node_modules/`)
+   │ │── package.json # Описание пакетов и зависимостей
+   │ │── server.js # Главный файл сервера
+   │ │── package-lock.json # Фиксация версий зависимостей
+   │── client/ # Frontend
+   │── README.md # Документация проекта
