@@ -15,4 +15,10 @@ router.post("/", (req, res) => {
   res.json({ initialInvestment, interestRate, years, finalAmount });
 });
 
+// Тестовый маршрут для проверки
+router.get("/", (req, res) => {
+  res.json({ message: "Маршрут /api/calculate работает!" });
+});
+
+
 module.exports = router;

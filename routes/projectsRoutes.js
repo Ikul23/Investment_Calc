@@ -11,4 +11,9 @@ router.post("/projects", createProject);
 // Удалить проект
 router.delete("/projects/:id", deleteProject);
 
+// Тестовый маршрут для проверки
+router.get("/", (req, res) => {
+  res.json({ message: "Маршрут /api/projects работает!" });
+});
+
 module.exports = router;
