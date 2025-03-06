@@ -39,17 +39,28 @@
 
    ### Структура Проекта
 
-   investmentCalculationProject/
+   investmentCalculationProject
+
    │── server/ # Backend-папка
-   │ │── node_modules/ # Установленные пакеты (не коммитим)
+
+   │ │── node_modules/ # Установленные пакеты
+
    │ │── routes/ # Папка с маршрутами
+
    │ │ │── projectsRoutes.js # Маршруты для проектов
    │ │ │── calculateRoutes.js # Маршруты для расчетов
    │ │ │── userRoutes.js # Маршруты для пользователей
+
    │ │── .env # Конфигурация окружения (порт, ключи и т.д.)
-   │ │── .gitignore # Игнорируемые файлы (например, `node_modules/`)
+
+   │ │── .gitignore
+
    │ │── package.json # Описание пакетов и зависимостей
+
    │ │── server.js # Главный файл сервера
+
    │ │── package-lock.json # Фиксация версий зависимостей
+
    │── client/ # Frontend
+
    │── README.md # Документация проекта

@@ -4,6 +4,18 @@ const cors = require("cors");
 
 const app = express();
 
+const pool = require("./db");
+
+app.get("/api/db-test", async (req, res) => {
+    try {
+        const result = await pool.query("SELECT NOW()");
+        res.json({ success: true, time: result.rows[0] });
+    } catch (error) {
+        res.status(500).json({ success: false, error: error.message });
+    }
+});
+
+
 const calculateRoutes = require("./routes/calculateRoutes");
 const userRoutes = require("./routes/userRoutes");
 const projectsRoutes = require("./routes/projectsRoutes"); 
