@@ -4,17 +4,12 @@ const cors = require("cors");
 
 const app = express();
 
-const pool = require("./db");
+const sequelize = require("./config/database");
 
-app.get("/api/db-test", async (req, res) => {
-    try {
-        const result = await pool.query("SELECT NOW()");
-        res.json({ success: true, time: result.rows[0] });
-    } catch (error) {
-        res.status(500).json({ success: false, error: error.message });
-    }
-});
-
+sequelize
+  .authenticate()
+  .then(() => console.log("✅ Успешное подключение к БД"))
+  .catch((err) => console.error("❌ Ошибка подключения к БД:", err));
 
 const calculateRoutes = require("./routes/calculateRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -40,5 +35,10 @@ app.get("/api/test", (req, res) => {
 
 // Указываем порт из .env или по умолчанию 5000
 const PORT = process.env.PORT || 5000;
+
+sequelize.sync()
+    .then(() => console.log("✅ Модели синхронизированы"))
+    .catch(err => console.error("❌ Ошибка синхронизации:", err));
+
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 

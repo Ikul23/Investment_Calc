@@ -39,28 +39,34 @@
 
    ### Структура Проекта
 
-   investmentCalculationProject
+   📦 InvestmentCalculationProject
 
-   │── server/ # Backend-папка
+┣ 📂 config
+┃ ┣ 📜 config.json # Файл конфигурации Sequelize
+┃ ┣ 📜 database.js # Подключение к БД через Sequelize
 
-   │ │── node_modules/ # Установленные пакеты
+┣ 📂 controllers
+┃ ┣ 📜 projectController.js # Логика обработки запросов проектов
 
-   │ │── routes/ # Папка с маршрутами
+┣ 📂 migrations # Папка для миграций Sequelize
 
-   │ │ │── projectsRoutes.js # Маршруты для проектов
-   │ │ │── calculateRoutes.js # Маршруты для расчетов
-   │ │ │── userRoutes.js # Маршруты для пользователей
+┣ 📂 models # Папка для моделей Sequelize
 
-   │ │── .env # Конфигурация окружения (порт, ключи и т.д.)
+┣ 📂 routes
+┃ ┣ 📜 calculateRoutes.js # Маршруты расчётов
+┃ ┣ 📜 projectsRoutes.js # Маршруты проектов
+┃ ┣ 📜 userRoutes.js # Маршруты пользователей
 
-   │ │── .gitignore
+┣ 📂 seeders # Папка для наполнения БД начальными данными
 
-   │ │── package.json # Описание пакетов и зависимостей
+┣ 📜 .env # Переменные окружения
 
-   │ │── server.js # Главный файл сервера
+┣ 📜 .gitignore # Игнорируемые файлы Git
 
-   │ │── package-lock.json # Фиксация версий зависимостей
+┣ 📜 package.json # Зависимости проекта
 
-   │── client/ # Frontend
+┣ 📜 package-lock.json # Фиксация версий зависимостей
 
-   │── README.md # Документация проекта
+┣ 📜 Readme.md # Документация проекта
+
+┣ 📜 server.js # Главный серверный файл
