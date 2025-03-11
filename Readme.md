@@ -47,45 +47,58 @@ GET /results/:project_id Получение результатов расчет�
 
 📦 InvestmentCalculationProject
 
+┣ 📂 client
+
+┃ ┣ 📂 src (файлы фронтенда)
+
+┃ ┣ 📂 public (статические файлы: CSS, JS, изображения)
+
+┃ ┣ 📜 index.html (основной HTML-файл)
+
+┃ ┣ 📜 styles.css (основной CSS)
+
+┃ ┣ 📜 script.js (основной JS)
+
 ┣ 📂 config
-┃ ┣ 📜 config.json # Файл конфигурации Sequelize
-┃ ┣ 📜 database.js # Подключение к БД через Sequelize
+
+┃ ┣ 📜 config.json (конфигурация Sequelize)
+
+┃ ┣ 📜 database.js (подключение к БД через Sequelize)
 
 ┣ 📂 controllers
-┃ ┣ 📜 projectController.js # Логика обработки запросов проектов
 
-┣ 📂 migrations # Папка для миграций Sequelize
+┃ ┣ 📜 projectController.js (логика обработки проектов)
 
-┣ 📂 models # Папка для моделей Sequelize
+┣ 📂 migrations (файлы миграций Sequelize)
+
+┣ 📂 models
+
+┃ ┣ 📜 cashFlows.js (модель для хранения денежных потоков)
+
+┃ ┣ 📜 financialResults.js (модель финансовых результатов, например, NPV, IRR и т. д.)
+
+┃ ┣ 📜 project.js (модель проекта: название, описание и связи с другими таблицами)
 
 ┣ 📂 routes
-┃ ┣ 📜 calculateRoutes.js # Маршруты расчётов
-┃ ┣ 📜 projectsRoutes.js # Маршруты проектов
-┃ ┣ 📜 userRoutes.js # Маршруты пользователей
 
-┣ 📂 seeders # Папка для наполнения БД начальными данными
+┃ ┣ 📜 calculateRoutes.js (маршруты для расчетов)
 
-┣ 📜 .env # Переменные окружения
+┃ ┣ 📜 projectsRoutes.js (маршруты проектов)
 
-┣ 📜 .gitignore # Игнорируемые файлы Git
+┃ ┣ 📜 userRoutes.js (маршруты пользователей)
 
-┣ 📜 package.json # Зависимости проекта
+┣ 📂 seeders (начальные данные для БД)
 
-┣ 📜 package-lock.json # Фиксация версий зависимостей
+┣ 📜 .env (переменные окружения)
 
-┣ 📜 Readme.md # Документация проекта
+┣ 📜 .gitignore (игнорируемые файлы Git)
 
-┣ 📜 server.js # Главный серверный файл
+┣ 📜 package.json (зависимости проекта)
 
-┣ 📂 client # Каталог для фронтенда
+┣ 📜 package-lock.json (фиксированные версии зависимостей)
 
-┃ ┣ 📂 public # Статика (CSS, JS, картинки)
-┃ ┃ ┣ 📜 index.html # Главный HTML-файл
-┃ ┃ ┣ 📜 styles.css # Основной CSS
-┃ ┃ ┣ 📜 script.js # Основной JS
-┃ ┃ ┣ 📂 assets # Картинки, иконки
+┣ 📜 Readme.md (документация проекта)
 
-┃ ┣ 📂 src # Исходники React
-┃ ┣ 📜 package.json # Зависимости фронта
+┣ 📜 server.js (главный серверный файл, инициализация сервера Express)
 
 ## <[Веб адрес Проекта](https://investment-calc.onrender.com)>
