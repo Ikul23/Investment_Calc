@@ -75,8 +75,8 @@
 
 ┃ ┣ 📂 public # Статика (CSS, JS, картинки)
 ┃ ┃ ┣ 📜 index.html # Главный HTML-файл
-┃ ┃ ┣ 📜 styles.css # Основной CSS (можно переименовать)
-┃ ┃ ┣ 📜 script.js # Основной JS (если потребуется)
+┃ ┃ ┣ 📜 styles.css # Основной CSS
+┃ ┃ ┣ 📜 script.js # Основной JS
 ┃ ┃ ┣ 📂 assets # Картинки, иконки
 
 ┃ ┣ 📂 src # Исходники React
