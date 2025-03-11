@@ -88,4 +88,4 @@ GET /results/:project_id Получение результатов расчет�
 ┃ ┣ 📂 src # Исходники React
 ┃ ┣ 📜 package.json # Зависимости фронта
 
-## <["Веб адрес Проекта"](https://github.com/Ikul23/JS_ADVANCED/tree/main/HT3)>
+## <[Веб адрес Проекта](https://investment-calc.onrender.com)>
