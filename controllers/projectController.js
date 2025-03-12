@@ -13,39 +13,26 @@ const getProjects = async (req, res) => {
 };
 
 // Создать проект
-const createProject = async (req, res) => {
-    const { name, opex, capex, revenue, cashFlows, financialResults } = req.body;
+const createProject = async (req, res) => { 
+    let { name, opex, capex, revenue, usefulLifeYears } = req.body;
+
     if (!name || !opex || !capex || !revenue) {
-        return res.status(400).json({ message: "Заполните все поля!" });
+        return res.status(400).json({ message: "Заполните все обязательные поля!" });
+    }
+
+    
+    if (!usefulLifeYears) {
+        usefulLifeYears = 5;
     }
 
     try {
-        const newProject = await Project.create({ name, opex, capex, revenue });
-
-        // Если переданы денежные потоки – создаем их
-        if (cashFlows && Array.isArray(cashFlows)) {
-            await Promise.all(
-                cashFlows.map(flow => 
-                    CashFlow.create({ ...flow, projectId: newProject.id })
-                )
-            );
-        }
-
-        // Если переданы финрезультаты – создаем их
-        if (financialResults && Array.isArray(financialResults)) {
-            await Promise.all(
-                financialResults.map(result => 
-                    FinancialResult.create({ ...result, projectId: newProject.id })
-                )
-            );
-        }
+        const newProject = await Project.create({ name, opex, capex, revenue, usefulLifeYears });
 
         res.status(201).json(newProject);
     } catch (error) {
         res.status(500).json({ message: "Ошибка при создании проекта", error });
     }
 };
-
 // Удалить проект и связанные записи
 const deleteProject = async (req, res) => {
     const { id } = req.params;

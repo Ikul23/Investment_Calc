@@ -7,6 +7,23 @@ module.exports = (sequelize, DataTypes) => {
     description: {
       type: DataTypes.TEXT,
     },
+    opex: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    capex: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    revenue: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+    },
+    usefulLifeYears: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      defaultValue: 5, 
+    },
     createdAt: {
       type: DataTypes.DATE,
       defaultValue: DataTypes.NOW,
