@@ -4,9 +4,6 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT,
-    },
     opex: {
       type: DataTypes.FLOAT,
       allowNull: false,
@@ -21,8 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     usefulLifeYears: {
       type: DataTypes.INTEGER,
-      allowNull: false,
-      defaultValue: 5, 
+      allowNull: true, // Делаем необязательным
     },
     createdAt: {
       type: DataTypes.DATE,
