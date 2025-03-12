@@ -9,18 +9,26 @@
 	</head>
 	<body>
 		<div class="container mt-5">
-			<h1 class="text-center">Калькулятор инвестиций</h1>
+			<h1 class="text-center">Вводные формы для экспресс-анализа эффективности инвестиционного проекта</h1>
 			<form id="calc-form">
 				<div class="mb-3">
-					<label for="initial" class="form-label">Начальный капитал ($)</label>
+					<label for="initial" class="form-label">Название проекта</label>
 					<input type="number" class="form-control" id="initial" required />
 				</div>
 				<div class="mb-3">
-					<label for="rate" class="form-label">Процентная ставка (%)</label>
+					<label for="rate" class="form-label">Начальные операционные затраты OPEX (руб)</label>
 					<input type="number" class="form-control" id="rate" required />
 				</div>
 				<div class="mb-3">
-					<label for="years" class="form-label">Срок (лет)</label>
+					<label for="years" class="form-label">Размер инвестиций в проект CAPEX (руб)</label>
+					<input type="number" class="form-control" id="years" required />
+				</div>
+				<div class="mb-3">
+					<label for="years" class="form-label">Прогнозируемая выручка (руб)</label>
+					<input type="number" class="form-control" id="years" required />
+				</div>
+				<div class="mb-3">
+					<label for="years" class="form-label">Срок полезного использования созданного актива (лет)</label>
 					<input type="number" class="form-control" id="years" required />
 				</div>
 				<button type="submit" class="btn btn-primary w-100">Рассчитать</button>

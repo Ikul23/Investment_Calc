@@ -6,7 +6,7 @@ const { getProjects, createProject, deleteProject } = require("../controllers/pr
 router.get("/projects", getProjects);
 
 // Создать новый проект
-router.post("/projects", createProject);
+router.post("/", createProject);
 
 // Удалить проект
 router.delete("/projects/:id", deleteProject);
