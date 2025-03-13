@@ -37,10 +37,10 @@ app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/public", "index.html"));
 });
 
-// Определяем порт
+
 const PORT = process.env.PORT || 5000;
 
-// ⚠️ Используем alter: true, чтобы не терять данные
+
 sequelize
   .sync({ alter: true }) 
   .then(() => console.log("✅ Модели синхронизированы"))

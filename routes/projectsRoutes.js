@@ -3,16 +3,16 @@ const router = express.Router();
 const { getProjects, createProject, deleteProject } = require("../controllers/projectController");
 
 // Получить все проекты
-router.get("/projects", getProjects);
+router.get("/", getProjects);
 
 // Создать новый проект
 router.post("/", createProject);
 
 // Удалить проект
-router.delete("/projects/:id", deleteProject);
+router.delete("/:id", deleteProject);
 
 // Тестовый маршрут для проверки
-router.get("/", (req, res) => {
+router.get("/test", (req, res) => {
   res.json({ message: "Маршрут /api/projects работает!" });
 });
 
