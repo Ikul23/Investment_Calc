@@ -1,9 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const { getProjects, createProject, deleteProject } = require("../controllers/projectController");
+const { getProjects, getProjectById, createProject, deleteProject } = require("../controllers/projectController");
 
-// Получить все проекты
-router.get("/", getProjects);
+// GET /api/projects - получить все проекты
+router.get('/', getProjects);
+
+// GET /api/projects/:id - получить проект по ID
+router.get('/:id', getProjectById);
 
 // Создать новый проект
 router.post("/", createProject);
