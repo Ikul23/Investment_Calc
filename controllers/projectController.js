@@ -31,6 +31,7 @@ const createProject = async (req, res) => {
         res.status(201).json(newProject);
     } catch (error) {
         res.status(500).json({ message: "Ошибка при создании проекта", error });
+        console.error("❌ Ошибка при создании проекта:", error, error.stack);
     }
 };
 // Удалить проект и связанные записи
