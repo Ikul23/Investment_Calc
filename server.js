@@ -4,7 +4,7 @@ const cors = require("cors");
 const path = require("path"); // ✅ Добавили импорт
 
 const app = express();
-const sequelize = require("./config/database");
+const {sequelize} = require("./config/database");
 
 // Проверка подключения к БД
 sequelize

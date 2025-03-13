@@ -1,4 +1,5 @@
 require("dotenv").config();
+const { Sequelize } = require("sequelize");
 const { URL } = require("url");
 
 const isProduction = process.env.NODE_ENV === "production";
@@ -22,7 +23,7 @@ if (process.env.DATABASE_URL) {
   };
 }
 
-module.exports = {
+const config = {
   development: {
     username: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
@@ -41,3 +42,9 @@ module.exports = {
   },
   production: productionConfig,
 };
+
+// Выбираем конфигурацию в зависимости от среды
+const env = process.env.NODE_ENV || "development";
+const sequelize = new Sequelize(config[env]);
+
+module.exports = { sequelize, config };
