@@ -43,9 +43,11 @@ const deleteProject = async (req, res) => {
 
         res.json({ message: "Проект и связанные данные удалены" });
     } catch (error) {
-        console.error("Ошибка при создании проекта:", error);
-    res.status(500).json({ message: "Ошибка при создании проекта", error: error.message });
-    }
+    console.error("Ошибка при создании проекта:", error); 
+    res.status(500).json({
+      message: "Ошибка при создании проекта",
+      error: error.message || error, 
+    });
+  }
 };
-
 module.exports = { getProjects, createProject, deleteProject };
