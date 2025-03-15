@@ -7,9 +7,7 @@ const { sequelize } = db;
 // Получить все проекты (включая денежные потоки и финрезультаты)
 const getProjects = async (req, res) => {
     try {
-        const projects = await Project.findAll({
-            include: [CashFlow, FinancialResult]
-        });
+        const projects = await Project.findAll();
         res.json(projects);
     } catch (error) {
         console.error("❌ Ошибка при получении проектов:", error);
@@ -21,9 +19,7 @@ const getProjects = async (req, res) => {
 const getProjectById = async (req, res) => {
     const { id } = req.params;
     try {
-        const project = await Project.findByPk(id, {
-            include: [CashFlow, FinancialResult]
-        });
+        const project = await Project.findByPk();
         
         if (!project) {
             return res.status(404).json({ message: "Проект не найден" });
