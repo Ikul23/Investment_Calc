@@ -20,6 +20,9 @@ const projectsRoutes = require("./routes/projectsRoutes");
 app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
+// фронт
+app.use(express.static('client/public'));
+
 // Подключаем маршруты API
 app.use("/api/calculate", calculateRoutes);
 app.use("/api/users", userRoutes);
