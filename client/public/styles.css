@@ -1,15 +1,69 @@
 body {
-    background-image: url('/client/src/background_main.jpg'); 
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat; 
-    background-attachment: fixed; 
-    color: #333; }
-h1 {
+    background: url('/client/public/images/background_main.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+    text-align: center;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card {
+    background: rgba(255, 255, 255, 0.9); 
+    border-radius: 10px;
+}
+
+
+
+.main-title {
     color: #007bff;
 }
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.calculate-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.contact-buttons {
+    margin-top: 20px;
+}
+
+.contact-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    margin: 5px;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.email-btn {
+    background-color: #28a745;
+}
+
+.tg-btn {
+    background-color: #0088cc;
 }
