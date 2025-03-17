@@ -5,6 +5,7 @@ import App from './App';
 import './index.css';
 
 // Логирование ошибок
+console.log("✅ main.jsx загружен");
 console.log('Инициализация приложения');
 try {
   const root = ReactDOM.createRoot(document.getElementById('root'));
