@@ -1,9 +1,9 @@
 import React from 'react';
 
-function Footer() {
+function Footer({ children }) {
   return (
     <footer>
-      <p>Кнопки обратной связи</p>
+      {children}
     </footer>
   );
 }
