@@ -9,5 +9,9 @@ export default defineConfig({
     strictPort: true,
     open: true,  
     cors: true
+  },
+build: {
+    outDir: 'dist', 
+    emptyOutDir: true, 
   }
 });
