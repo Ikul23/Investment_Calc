@@ -5,6 +5,8 @@ import InputForm from './pages/InputForm';
 import ResultPage from './pages/ResultPage';
 import Header from './components/Header'; 
 import Footer from './components/Footer'; 
+import './index.css';
+
 
 console.log("✅ App.js загружен");
 

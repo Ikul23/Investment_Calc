@@ -22,3 +22,16 @@ body {
   max-width: 600px;
   width: 100%;
 }
+
+.custom-header {
+  background: transparent; 
+  box-shadow: none; 
+}
+
+.navbar-brand, .nav-link {
+  color: burlywood !important; 
+}
+
+.navbar-toggler-icon {
+  filter: invert(1); 
+}

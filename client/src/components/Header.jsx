@@ -1,11 +1,31 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
-function Header() {
+
+const Header = () => {
   return (
-    <header>
-      <h1>Investment Calculation</h1>
-    </header>
+    <nav className="navbar navbar-expand-lg custom-header">
+      <div className="container">
+        <Link className="navbar-brand" to="/">Мой Проект</Link>
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link className="nav-link" to="/">Главная</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/input">Ввод данных</Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to="/results">Результаты</Link>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
   );
-}
+};
 
 export default Header;

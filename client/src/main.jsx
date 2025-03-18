@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import App from './App';
 import './index.css';
 
@@ -11,11 +11,9 @@ try {
   const root = ReactDOM.createRoot(document.getElementById('root'));
   console.log('Root элемент найден:', !!root);
   root.render(
-    <React.StrictMode>
-      <Router>
-        <App />
-      </Router>
-    </React.StrictMode>
+     <BrowserRouter>
+    <App />
+  </BrowserRouter>,
   );
   console.log('Рендеринг завершен');
 } catch (error) {
