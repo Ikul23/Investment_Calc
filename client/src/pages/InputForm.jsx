@@ -1,19 +1,16 @@
 import React, { useState } from "react";
 import { Container, Form, Button, Table } from "react-bootstrap";
-import "../index.css";
+import { sendProjectData } from "../api";
 
 function InputForm() {
-  // Состояние для хранения данных проекта
   const [projectData, setProjectData] = useState({
     name: "",
     opex: "",
     capex: "",
   });
 
-  // Состояние для хранения данных по годам
   const [yearlyData, setYearlyData] = useState([]);
 
-  // Обработчик изменения полей формы проекта
   const handleProjectInputChange = (e) => {
     const { name, value } = e.target;
     setProjectData((prevData) => ({
@@ -22,7 +19,6 @@ function InputForm() {
     }));
   };
 
-  // Обработчик добавления новой строки (года)
   const addYearRow = () => {
     if (yearlyData.length < 7) {
       setYearlyData([...yearlyData, { year: "", revenue: "", expenses: "" }]);
@@ -31,32 +27,33 @@ function InputForm() {
     }
   };
 
-  // Обработчик изменения данных в таблице
   const handleYearInputChange = (index, field, value) => {
     const updatedData = [...yearlyData];
     updatedData[index][field] = value;
     setYearlyData(updatedData);
   };
 
-  // Обработчик удаления строки
   const removeYearRow = (index) => {
     const updatedData = yearlyData.filter((_, i) => i !== index);
     setYearlyData(updatedData);
   };
 
-  // Обработчик отправки формы
-  const handleSubmit = (e) => {
+  // Обновлённый обработчик отправки формы
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Данные проекта:", projectData);
-    console.log("Данные по годам:", yearlyData);
-    alert("Данные успешно отправлены!");
+    try {
+      const result = await sendProjectData(projectData, yearlyData);
+      console.log("Ответ сервера:", result);
+      alert("Данные успешно отправлены!");
+    } catch (error) {
+      alert("Ошибка при отправке данных на сервер!");
+    }
   };
 
   return (
     <Container className="mt-5 p-4">
       <h2 className="text-center text-primary mb-4">Ввод данных</h2>
       <Form onSubmit={handleSubmit}>
-        {/* Поля для ввода данных проекта */}
         <Form.Group className="mb-3">
           <Form.Label>Название проекта</Form.Label>
           <Form.Control
@@ -90,7 +87,6 @@ function InputForm() {
           />
         </Form.Group>
 
-        {/* Таблица для ввода данных по годам */}
         <h4 className="mt-4">Данные по годам:</h4>
         <Table striped bordered hover className="mt-2">
           <thead>
@@ -136,12 +132,10 @@ function InputForm() {
           </tbody>
         </Table>
 
-        {/* Кнопка добавления года */}
         <Button variant="success" className="mb-3" onClick={addYearRow}>
           + Добавить год
         </Button>
 
-        {/* Кнопка отправки формы */}
         <Button variant="primary" size="lg" className="w-100 mt-4" type="submit">
           Рассчитать
         </Button>

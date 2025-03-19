@@ -2,12 +2,18 @@ const db = require("../models");
 const Project = db.Project;
 const CashFlow = db.CashFlow;
 const FinancialResult = db.FinancialResult;
-const { sequelize } = db; 
+const { sequelize } = db;
 
-// Получить все проекты (включая денежные потоки и финрезультаты)
+// ✅ Получить все проекты (включая денежные потоки и финрезультаты)
 const getProjects = async (req, res) => {
     try {
-        const projects = await Project.findAll();
+        const projects = await Project.findAll({
+            include: [
+                { model: CashFlow, as: "cashFlows" },
+                { model: FinancialResult, as: "financialResults" }
+            ]
+        });
+
         res.json(projects);
     } catch (error) {
         console.error("❌ Ошибка при получении проектов:", error);
@@ -15,16 +21,21 @@ const getProjects = async (req, res) => {
     }
 };
 
-// Получить проект по ID
+// ✅ Получить проект по ID (включая связанные таблицы)
 const getProjectById = async (req, res) => {
     const { id } = req.params;
     try {
-        const project = await Project.findByPk();
-        
+        const project = await Project.findByPk(id, {
+            include: [
+                { model: CashFlow, as: "cashFlows" },
+                { model: FinancialResult, as: "financialResults" }
+            ]
+        });
+
         if (!project) {
             return res.status(404).json({ message: "Проект не найден" });
         }
-        
+
         res.json(project);
     } catch (error) {
         console.error("❌ Ошибка при получении проекта:", error);
@@ -32,11 +43,11 @@ const getProjectById = async (req, res) => {
     }
 };
 
-// Создать проект
+// ✅ Создать проект
 const createProject = async (req, res) => { 
     let { name, opex, capex, revenue, usefulLifeYears } = req.body;
 
-    if (!name || !opex || !capex || !revenue) {
+    if (!name || opex === undefined || capex === undefined || revenue === undefined) {
         return res.status(400).json({ message: "Заполните все обязательные поля!" });
     }
 
@@ -53,16 +64,16 @@ const createProject = async (req, res) => {
     }
 };
 
-// Удалить проект и связанные записи
+// ✅ Удалить проект и связанные записи
 const deleteProject = async (req, res) => {
     const { id } = req.params;
     const t = await sequelize.transaction();
-    
+
     try {
         await CashFlow.destroy({ where: { projectId: id }, transaction: t });
         await FinancialResult.destroy({ where: { projectId: id }, transaction: t });
         await Project.destroy({ where: { id }, transaction: t });
-        
+
         await t.commit();
         res.json({ message: "Проект и связанные данные удалены" });
     } catch (error) {
