@@ -1,10 +1,5 @@
 module.exports = (sequelize, DataTypes) => {
   const Project = sequelize.define("Project", {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -27,19 +22,10 @@ module.exports = (sequelize, DataTypes) => {
     },
   });
 
-  // ✅ Определение связей
+  
   Project.associate = (models) => {
-    Project.hasMany(models.CashFlow, {
-      foreignKey: "projectId",
-      as: "cashFlows",
-      onDelete: "CASCADE",
-    });
-
-    Project.hasMany(models.FinancialResult, {
-      foreignKey: "projectId",
-      as: "financialResults",
-      onDelete: "CASCADE",
-    });
+    Project.hasMany(models.CashFlow, { foreignKey: "projectId", onDelete: "CASCADE" });
+    Project.hasMany(models.FinancialResult, { foreignKey: "projectId", onDelete: "CASCADE" });
   };
 
   return Project;

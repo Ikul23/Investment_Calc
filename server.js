@@ -27,7 +27,7 @@ app.use(
 );
 app.use(express.json());
 
-// 📌 Фронтенд (если нужно раздавать статику)
+
 app.use(express.static(path.join(__dirname, "client/public")));
 
 // Подключаем маршруты API
@@ -40,13 +40,13 @@ app.get("/api/test", (req, res) => {
   res.json({ message: "Бэкенд работает!" });
 });
 
-// 📌 Раздача фронтенда (SPA)
+
 app.use(express.static(path.join(__dirname, "client/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/dist", "index.html"));
 });
 
-// 📌 Middleware для обработки ошибок API
+
 app.use((err, req, res, next) => {
   console.error("❌ Ошибка:", err.message);
   res.status(err.status || 500).json({ message: err.message || "Ошибка сервера" });
