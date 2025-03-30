@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { Container, Form, Button, Table } from "react-bootstrap";
 import { sendProjectData } from "../api";
 
-function InputForm() {
+const InputForm = () => {
   const [projectData, setProjectData] = useState({
     name: "",
-    opex: "",
-    capex: "",
+    opex: 0,
+    capex: 0,
+    revenue: 0,
+    usefulLifeYears: 5, // Значение по умолчанию
   });
 
   const [yearlyData, setYearlyData] = useState([]);
@@ -21,7 +23,8 @@ function InputForm() {
 
   const addYearRow = () => {
     if (yearlyData.length < 7) {
-      setYearlyData([...yearlyData, { year: "", revenue: "", expenses: "" }]);
+      setYearlyData([...yearlyData, { year: new Date().getFullYear(), revenue: 0, opex: 0, capex: 0 }]);
+
     } else {
       alert("Максимум 7 лет!");
     }
@@ -29,7 +32,7 @@ function InputForm() {
 
   const handleYearInputChange = (index, field, value) => {
     const updatedData = [...yearlyData];
-    updatedData[index][field] = value;
+    updatedData[index][field] = parseFloat(value) || 0; 
     setYearlyData(updatedData);
   };
 
@@ -38,7 +41,6 @@ function InputForm() {
     setYearlyData(updatedData);
   };
 
-  // Обновлённый обработчик отправки формы
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -93,7 +95,8 @@ function InputForm() {
             <tr>
               <th>Год</th>
               <th>Доход</th>
-              <th>Расходы</th>
+              <th>OPEX</th>
+              <th>CAPEX</th>
               <th>Действия</th>
             </tr>
           </thead>
@@ -105,7 +108,9 @@ function InputForm() {
                     type="number"
                     placeholder="Год"
                     value={row.year}
-                    onChange={(e) => handleYearInputChange(index, "year", e.target.value)}
+                    onChange={(e) =>
+                      handleYearInputChange(index, "year", e.target.value)
+                    }
                   />
                 </td>
                 <td>
@@ -113,19 +118,35 @@ function InputForm() {
                     type="number"
                     placeholder="Доход"
                     value={row.revenue}
-                    onChange={(e) => handleYearInputChange(index, "revenue", e.target.value)}
+                    onChange={(e) =>
+                      handleYearInputChange(index, "revenue", e.target.value)
+                    }
                   />
                 </td>
                 <td>
                   <Form.Control
                     type="number"
-                    placeholder="Расходы"
-                    value={row.expenses}
-                    onChange={(e) => handleYearInputChange(index, "expenses", e.target.value)}
+                    placeholder="OPEX"
+                    value={row.opex}
+                    onChange={(e) =>
+                      handleYearInputChange(index, "opex", e.target.value)
+                    }
                   />
                 </td>
                 <td>
-                  <Button variant="danger" onClick={() => removeYearRow(index)}>Удалить</Button>
+                  <Form.Control
+                    type="number"
+                    placeholder="CAPEX"
+                    value={row.capex}
+                    onChange={(e) =>
+                      handleYearInputChange(index, "capex", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <Button variant="danger" onClick={() => removeYearRow(index)}>
+                    Удалить
+                  </Button>
                 </td>
               </tr>
             ))}
@@ -142,6 +163,6 @@ function InputForm() {
       </Form>
     </Container>
   );
-}
+};
 
 export default InputForm;

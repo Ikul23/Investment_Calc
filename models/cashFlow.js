@@ -1,26 +1,46 @@
 module.exports = (sequelize, DataTypes) => {
-  const CashFlow = sequelize.define("CashFlow", {
-    year: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-    },
-    operationalCashFlow: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    investmentCashFlow: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    projectId: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: "Projects",
-        key: "id",
-      },
-      onDelete: "CASCADE",
-    },
-  });
+    if (!sequelize) {
+        throw new Error("Sequelize instance is not provided to CashFlow model");
+    }
 
-  return CashFlow;
+    const CashFlow = sequelize.define(
+        "CashFlow",
+        {
+            projectId: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+                references: {
+                    model: "Projects",
+                    key: "id",
+                },
+                onDelete: "CASCADE",
+            },
+            year: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            opex: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
+            capex: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
+            revenue: {
+                type: DataTypes.FLOAT,
+                allowNull: false,
+            },
+        },
+        {
+            timestamps: false,
+            tableName: "CashFlows",
+        }
+    );
+
+    CashFlow.associate = (models) => {
+        CashFlow.belongsTo(models.Project, { foreignKey: "projectId", onDelete: "CASCADE" });
+    };
+
+    return CashFlow;
 };

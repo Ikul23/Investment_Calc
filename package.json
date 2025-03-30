@@ -3,12 +3,16 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cd client && npm install && npm run build",
-    "start": "react-scripts start",
-    "server": "nodemon server.js", 
-  "client": "npm start --prefix client",
-  "dev": "concurrently \"npm run server\" \"npm run client\""    
+    "server": "nodemon server.js",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "test": "jest --runInBand",
+  "test:api": "jest tests/integration/api.routes.test.js --runInBand",
+  "test:integration": "jest tests/integration/ --runInBand",
+  "test:frontend": "jest tests/integration/frontend.integration.test.js --runInBand",
+  "test:models": "jest tests/integration/models-controllers.test.js --runInBand",
+  "test:coverage": "jest --coverage --runInBand"
   },
   "keywords": [],
   "author": "ikul23",
@@ -20,15 +24,22 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "fs": "^0.0.1-security",
     "path": "^0.12.7",
+    "pdfkit": "^0.16.0",
     "pg": "^8.13.3",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.6"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.2.0",
+    "@testing-library/user-event": "^14.6.1",
     "concurrently": "^9.1.2",
+    "jest": "^29.7.0",
     "nodemon": "^3.1.9",
     "sequelize-cli": "^6.6.2",
+    "supertest": "^7.1.0",
     "vite": "^6.2.2"
   }
 }

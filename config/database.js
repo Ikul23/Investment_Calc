@@ -39,12 +39,14 @@ const config = {
     host: process.env.DB_HOST,
     port: Number(process.env.DB_PORT) || 5432,
     dialect: "postgres",
+    logging: false, // Отключаем логи для тестов
   },
   production: productionConfig,
 };
 
 // Выбираем конфигурацию в зависимости от среды
 const env = process.env.NODE_ENV || "development";
-const sequelize = new Sequelize(config[env]);
+const sequelize = new Sequelize(config[env]); // ✅ Теперь sequelize создаётся корректно
 
-module.exports = { sequelize, config };
+module.exports = sequelize; // ✅ Правильный экспорт для работы `.sync()`
+module.exports.config = config; // ✅ Экспортируем `config` отдельно
