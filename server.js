@@ -3,6 +3,8 @@ const express = require("express");
 const cors = require("cors");
 const path = require("path");
 const bodyParser = require("body-parser");
+const errorHandler = require("./middleware/errorHandler");
+const requestLogger = require("./middleware/requestLogger");
 
 const app = express();
 const sequelize = require("./config/database");
@@ -22,11 +24,11 @@ app.use(cors({
 }));
 
 app.use(express.json());
+app.use(requestLogger); 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(errorHandler);
 app.use(express.static(path.join(__dirname, "client/public")));
-
 app.use("/api", reportRoutes);
 app.use("/api/calculate", calculateRoutes);
 app.use("/api/users", userRoutes);

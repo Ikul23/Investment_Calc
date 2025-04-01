@@ -2,6 +2,10 @@ const express = require("express");
 const router = express.Router();
 const { getProjects, getProjectById, createProject, deleteProject } = require("../controllers/projectController");
 
+router.get('/ping', (req, res) => {
+    res.json({ message: 'pong' });
+});
+
 // GET /api/projects - получить все проекты
 router.get('/', getProjects);
 

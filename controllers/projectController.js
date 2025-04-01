@@ -75,34 +75,41 @@ if (isNaN(discountRate) || discountRate <= 0) {
 const createProject = async (req, res) => {
     const t = await sequelize.transaction();
     try {
-        const { name, discountRate = 0.25, years = 5 } = req.body;
+        const { name, years = 5 } = req.body;
+        const discountRate = 0.25;  // 🔹 Фиксируем дисконтную ставку
+        const usefulLifeYears = 7;  // 🔹 Фиксируем срок полезного использования
 
-        if (!name || !discountRate || !years) {
+        if (!name || !years) {
             await t.rollback();
             return res.status(400).json({ 
-                message: "Необходимо указать: название, ставку дисконтирования и срок проекта" 
+                message: "Необходимо указать: название и срок проекта" 
             });
         }
 
         const project = await Project.create({
             name,
             discountRate,
-            years
+            years,
+            opex: 0,  
+            capex: 0,
+            revenue: 0
         }, { transaction: t });
 
-        // Создаем пустые денежные потоки
-        const cashFlows = Array.from({ length: years }, (_, i) => ({
-            projectId: project.id,
-            year: i + 1,
-            revenue: 0,
-            opex: 0,
-            capex: 0
-        }));
+        const cashFlows = calculateCashFlow(0, 0, 0, usefulLifeYears)
+            .map(flow => ({ ...flow, projectId: project.id }));
 
         await CashFlow.bulkCreate(cashFlows, { transaction: t });
-        await t.commit();
 
-        res.status(201).json(project);
+        const financialResults = calculateFinancialResults(cashFlows, discountRate);
+        await FinancialResult.create({
+            projectId: project.id,
+            npv: financialResults.npv,
+            irr: financialResults.irr,
+            dpbp: financialResults.dpbp
+        }, { transaction: t });
+
+        await t.commit();
+        res.status(201).json({ project, cashFlows, financialResults });
     } catch (error) {
         await t.rollback();
         console.error("Ошибка при создании проекта:", error);
