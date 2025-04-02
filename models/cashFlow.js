@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
     );
 
     CashFlow.associate = (models) => {
-        CashFlow.belongsTo(models.Project, { foreignKey: "projectId", onDelete: "CASCADE" });
+         CashFlow.belongsTo(models.Project, { foreignKey: 'projectId', as: 'project' });
     };
 
     return CashFlow;

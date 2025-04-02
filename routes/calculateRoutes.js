@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const { Project, CashFlow, FinancialResult } = require("../models");
-const { calculateNPV, calculateIRR, calculatePP, calculateDPP } = require("../services/calculationService");
+const { calculateNPV,  calculateIRR, calculateDPBP } = require("../services/financialResultCalculator");
 
 // Эндпоинт для выполнения расчетов
 router.post("/", async (req, res) => {
@@ -27,24 +27,21 @@ router.post("/", async (req, res) => {
 
         // 3. Вычисляем показатели
         const npv = calculateNPV(cashFlows, project.discountRate);
-        const irr = calculateIRR(cashFlows);
-        const pp = calculatePP(cashFlows);
-        const dpp = calculateDPP(cashFlows, project.discountRate);
+        const irr = calculateIRR(cashFlows);        
+        const dpp = calculateDPBP(cashFlows, project.discountRate);
 
         // 4. Сохраняем результаты
         const result = await FinancialResult.create({
             projectId,
             npv,
-            irr,
-            pp,
+            irr,            
             dpp
         });
 
         // 5. Возвращаем ответ
         res.status(200).json({
             npv,
-            irr,
-            pp,
+            irr,            
             dpp,
             project: {
                 id: project.id,

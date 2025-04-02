@@ -5,45 +5,41 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const errorHandler = require("./middleware/errorHandler");
 const requestLogger = require("./middleware/requestLogger");
+const sequelize = require("./config/database");
 
 const app = express();
-const sequelize = require("./config/database");
-const db = require("./models");
 
 // Импорт маршрутов
-const reportRoutes = require("./routes/reportRoutes");
-const userRoutes = require("./routes/userRoutes");
-const projectsRoutes = require("./routes/projectsRoutes");
-const calculateRoutes = require('./routes/calculateRoutes');
-
-app.use('/api/calculate', calculateRoutes);
+const routes = require("./routes");
 
 app.use(cors({
   origin: process.env.CLIENT_URL || "http://localhost:5173",
-  credentials: true, 
+  credentials: true,
 }));
 
 app.use(express.json());
-app.use(requestLogger); 
+app.use(requestLogger);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(errorHandler);
-app.use(express.static(path.join(__dirname, "client/public")));
-app.use("/api", reportRoutes);
-app.use("/api/calculate", calculateRoutes);
-app.use("/api/users", userRoutes);
-app.use("/api/projects", projectsRoutes);
 
+// Подключаем маршруты
+app.use('/api', routes);
+
+// Тестовый роут
 app.get("/api/test", (req, res) => {
   res.json({ message: "Бэкенд работает!" });
 });
 
+// Статические файлы (Frontend)
 app.use(express.static(path.join(__dirname, "client/dist")));
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname, "client/dist", "index.html"));
 });
 
-// Глобальный обработчик ошибок
+// Обработчик ошибок
+app.use(errorHandler);
+
+// Глобальный обработчик ошибок (лучше оставить в самом конце)
 app.use((err, req, res, next) => {
   console.error("❌ Ошибка:", err.message);
   console.error("📌 Стек ошибки:", err.stack);
@@ -53,7 +49,7 @@ app.use((err, req, res, next) => {
 // Экспортируем `app` для тестов
 module.exports = app;
 
-// Запуск сервера (только в реальной среде, не в тестах)
+// Запуск сервера
 if (require.main === module) {
   const PORT = process.env.PORT || 5000;
 

@@ -1,31 +1,28 @@
 module.exports = (sequelize, DataTypes) => {
-  const Project = sequelize.define("Project", {
+  const Project = sequelize.define('Project', {
     name: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false
     },
-    opex: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    capex: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    revenue: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    usefulLifeYears: {
+    years: {
       type: DataTypes.INTEGER,
-      allowNull: true,
+      defaultValue: 5
     },
-  });
+    discountRate: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
+      defaultValue: 0.25
+    },
+    opex: DataTypes.FLOAT,
+    capex: DataTypes.FLOAT,
+    revenue: DataTypes.FLOAT
+  }, {});
 
-  
-  Project.associate = (models) => {
-    Project.hasMany(models.CashFlow, { foreignKey: "projectId", onDelete: "CASCADE" });
-    Project.hasMany(models.FinancialResult, { foreignKey: "projectId", onDelete: "CASCADE" });
+  Project.associate = function(models) {
+    Project.hasMany(models.CashFlow, {
+      foreignKey: 'projectId',
+      as: 'cashFlows'
+    });
   };
 
   return Project;

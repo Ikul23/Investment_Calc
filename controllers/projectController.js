@@ -1,33 +1,30 @@
 const db = require("../models");
 const { Project, CashFlow, FinancialResult } = db;
 const { sequelize } = db;
-const { calculateNPV } = require("../services/calculationService");
+const { calculateNPV } = require("../services/financialResultCalculator");
+const { calculateCashFlow } = require("../services/cashFlowCalculator");
+const { calculateFinancialResults } = require("../services/financialResultCalculator");
 
 // Получение всех проектов с дополнительными данными
 const getProjects = async (req, res) => {
-    try {
-        const projects = await Project.findAll({
-            include: [
-                { 
-                    model: CashFlow,
-                    attributes: ['id', 'year'] 
-                },
-                {
-                    model: FinancialResult,
-                    attributes: ['id', 'npv', 'irr']
-                }
-            ],
-            order: [['createdAt', 'DESC']]
-        });
-        
-        res.status(200).json(projects);
-    } catch (error) {
-        console.error("Ошибка при получении проектов:", error);
-        res.status(500).json({ 
-            message: "Ошибка при получении проектов",
-            error: process.env.NODE_ENV === 'development' ? error.message : null
-        });
-    }
+  try {
+    const projects = await Project.findAll({
+      include: [{
+        model: CashFlow,
+        as: 'cashFlows', // Используем тот же алиас
+        attributes: ['id', 'year', 'opex', 'capex', 'revenue'] // Опционально: выбираем нужные поля
+      }],
+      attributes: ['id', 'name', 'discountRate', 'years'] // Опционально: выбираем нужные поля проекта
+    });
+
+    res.status(200).json(projects);
+  } catch (error) {
+    console.error('Ошибка при получении проектов:', error);
+    res.status(500).json({
+      message: 'Ошибка сервера при получении проектов',
+      error: process.env.NODE_ENV === 'development' ? error.message : null
+    });
+  }
 };
 
 // Получение проекта по ID с полной информацией
@@ -76,9 +73,10 @@ const createProject = async (req, res) => {
     const t = await sequelize.transaction();
     try {
         const { name, years = 5 } = req.body;
-        const discountRate = 0.25;  // 🔹 Фиксируем дисконтную ставку
-        const usefulLifeYears = 7;  // 🔹 Фиксируем срок полезного использования
+        const discountRate = 0.25;  // Фиксированная ставка дисконтирования
+        const usefulLifeYears = 7;  // Срок полезного использования
 
+        // Валидация входных данных
         if (!name || !years) {
             await t.rollback();
             return res.status(400).json({ 
@@ -86,6 +84,7 @@ const createProject = async (req, res) => {
             });
         }
 
+        // 1. Создаем проект
         const project = await Project.create({
             name,
             discountRate,
@@ -95,28 +94,62 @@ const createProject = async (req, res) => {
             revenue: 0
         }, { transaction: t });
 
-        const cashFlows = calculateCashFlow(0, 0, 0, usefulLifeYears)
-            .map(flow => ({ ...flow, projectId: project.id }));
+        // 2. Создаем денежные потоки
+        const emptyCashFlows = Array.from({ length: usefulLifeYears }, (_, i) => ({
+            year: i + 1,
+            opex: 0,
+            capex: 0,
+            revenue: 0,
+            projectId: project.id
+        }));
 
-        await CashFlow.bulkCreate(cashFlows, { transaction: t });
+        await CashFlow.bulkCreate(emptyCashFlows, { transaction: t });
 
-        const financialResults = calculateFinancialResults(cashFlows, discountRate);
+        // 3. Рассчитываем финансовые показатели (пока с нулевыми значениями)
+        const initialResults = {
+            npv: 0,
+            irr: 0,
+            dpbp: usefulLifeYears, // По умолчанию равен сроку проекта
+            pp: usefulLifeYears
+        };
+
+        // 4. Создаем запись с финансовыми результатами
         await FinancialResult.create({
             projectId: project.id,
-            npv: financialResults.npv,
-            irr: financialResults.irr,
-            dpbp: financialResults.dpbp
+            year: new Date().getFullYear(),
+            revenue: 0,
+            operatingExpenses: 0,
+            netProfit: 0,
+            npv: initialResults.npv,
+            irr: initialResults.irr,
+            dpbp: initialResults.dpbp,
+            pp: initialResults.pp
         }, { transaction: t });
 
         await t.commit();
-        res.status(201).json({ project, cashFlows, financialResults });
+        
+        // Формируем ответ с созданными данными
+        const response = {
+            project: {
+                id: project.id,
+                name: project.name,
+                discountRate: project.discountRate,
+                years: project.years
+            },
+            message: "Проект успешно создан с пустыми денежными потоками"
+        };
+
+        res.status(201).json(response);
     } catch (error) {
         await t.rollback();
         console.error("Ошибка при создании проекта:", error);
-        res.status(500).json({ 
-            message: "Ошибка сервера",
-            error: process.env.NODE_ENV === 'development' ? error.message : null
-        });
+        
+        const errorResponse = {
+            message: "Ошибка при создании проекта",
+            error: error.message
+        };
+        
+        res.status(500).json(errorResponse);
     }
 };
 // Удаление проекта и связанных данных
